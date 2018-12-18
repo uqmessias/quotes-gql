@@ -1,6 +1,9 @@
 {
   "name": "quotes-gql",
   "version": "0.1.0",
+  "scripts": {
+    "start": "node index.js"
+  },
   "main": "index.js",
   "repository": "git@github.com:uqmessias/quotes-gql.git",
   "author": "Uilque Messias <messias@work.co>",
