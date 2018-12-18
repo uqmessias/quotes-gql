@@ -3,22 +3,32 @@ const { authors } = require('./assets/quotes.json');
 
 const typeDefs = gql`
   type Quote {
-    quotes: [String!]!
+    quote: String!
   }
 
   type Author {
     name: String!
-    quotes: Quote!
+    quotes(search: String): [Quote!]!
   }
 
   type Query {
-    authors: [Author!]
+    authors(name: String): [Author!]
   }
 `;
 
+const contains = (fullText, fragment) =>
+  (fullText || '').toLowerCase().indexOf((fragment || '').toLowerCase()) >= 0;
+
 const resolvers = {
   Query: {
-    authors: () => authors,
+    authors: (_, { name }) => !name
+      ? authors
+      : authors.filter(author => contains(author.name, name)),
+  },
+  Author: {
+    quotes: (author, { search }) => !search
+      ? author.quotes
+      : author.quotes.filter(({ quote }) => contains(quote, search)),
   }
 };
 
